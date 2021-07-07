@@ -1,4 +1,7 @@
-# merge multiple files by rows, only keep the title of the first file
+# add a new line for a file
+sed -i -e "$a\" test_enriched_kmers_matrix.txt
+
+# merge multiple files by rows, only keep the title of the first file, these files should have the same number of columns
 head -1 file1.txt > all.txt; tail -n +2 -q file*.txt >> all.txt
 
 # remove the first row
@@ -6,6 +9,9 @@ tail -n +2 file.txt > file.stdout
 
 # get rid of the first column in files in linux
 cut -d "," -f 2- file.csv > file_cut.csv 
+
+# merge files by columns, these files should have the same number of rows
+paste file1.txt file2.txt -d ","
 
 # get the rownames of a file
 tail -n +2 file.txt > file.txt_tem
@@ -31,3 +37,12 @@ ls -d *_fold
 # randomly select certain numbers of columns, but always keep the first column
 columns=1,$( for (( ii=2; ii<=2566743; ii++ )); do echo $ii; done | sort -R | head -500 | sort -n | tr '\\n' ',' | sed 's/,$//' )
 cut --fields=${columns} All_markers.csv -d ',' > Random_500_markers.csv
+
+### if there are too many columns (> 13500), try this
+columns=1,$( for (( ii=2; ii<=2566743; ii++ )); do echo $ii; done | sort -R | head -17500 | sort -n | tr '\n' ',' | sed 's/,$//' )
+columns1=1,$(echo $columns | cut -d"," -f2-10000 | tr '\n' ',' | sed 's/,$//')
+columns2=10001,$(echo $columns | cut -d"," -f10002-17500 | tr '\n' ',' | sed 's/,$//')
+cut --fields=${columns1} All_markers.csv -d ',' > Random_17500_markers_1.tem
+cut --fields=${columns2} All_markers.csv -d ',' > Random_17500_markers_2.tem
+paste Random_17500_markers_1.tem Random_17500_markers_2.tem  -d "," > Random_17500_markers.csv
+
