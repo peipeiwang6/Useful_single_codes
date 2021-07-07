@@ -1,0 +1,13 @@
+# merge multiple files by rows, only keep the title of the first file
+head -1 file1.txt > all.txt; tail -n +2 -q file*.txt >> all.txt
+
+# remove the first row
+tail -n +2 file.txt > file.stdout
+
+# get rid of the first column in files in linux
+cut -d "," -f 2- file.csv > file_cut.csv 
+
+# get the rownames of a file
+tail -n +2 file.txt > file.txt_tem
+cut -f1 < file.txt_tem > rownames.txt
+rm file.txt_tem
