@@ -11,3 +11,19 @@ cut -d "," -f 2- file.csv > file_cut.csv
 tail -n +2 file.txt > file.txt_tem
 cut -f1 < file.txt_tem > rownames.txt
 rm file.txt_tem
+
+# submit jobs to slurm
+l *sh|awk '{print "sbatch "$9}'|sh
+
+# check number of columns in a file
+awk -F , '{print NF}' file | les
+
+# file large files
+find ./ -size +1G
+
+### change doc format into linux
+dos2unix file
+mac2unix file
+
+### ls only the name of folders
+ls -d *_fold
